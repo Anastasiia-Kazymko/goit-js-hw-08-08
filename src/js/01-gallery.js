@@ -27,5 +27,14 @@ const galleryItem = galleryItems
   .join('');
 
 galleryList.insertAdjacentHTML('afterbegin', galleryItem);
-let gallery = new SimpleLightbox('.gallery a');
-console.log(gallery);
+
+galleryList.addEventListener('click', onImgClick);
+
+function onImgClick(e) {
+  if (!e.target.classList.contains('gallery__image')) {
+    return;
+  }
+  e.preventDefault();
+  let gallery = new SimpleLightbox('.gallery a');
+  console.log(gallery);
+}
