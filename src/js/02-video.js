@@ -3,23 +3,18 @@ import throttle from 'lodash.throttle';
 
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe);
+const LOCALSTORAGE_KEY = 'currentTime';
 
-const currentTime = {
-  duration: null,
-  percent: null,
-  seconds: null,
-};
+player.on('timeupdate', throttle(onPlay, 1000));
+player.on('loaded', pageUpdate);
 
-player.on('timeupdate', function (data) {
-  currentTime.duration = data.duration;
-  currentTime.percent = data.percent;
-  currentTime.seconds = data.seconds;
-  const currentTimeJSON = JSON.stringify(currentTime);
-  throttle(localStorage.setItem('CurrentTime', currentTimeJSON), 1000);
-  if (currentTimeJSON) {
-    currentTime.duration = data.duration;
-    currentTime.percent = data.percent;
-    currentTime.seconds = data.seconds;
+function onPlay(data) {
+  localStorage.setItem('LOCALSTORAGE_KEY', data.seconds);
+}
+
+function pageUpdate() {
+  let currentTime = localStorage.getItem('LOCALSTORAGE_KEY');
+  if (currentTime) {
+    player.setCurrentTime(currentTime);
   }
-  console.log(currentTimeJSON);
-});
+}
