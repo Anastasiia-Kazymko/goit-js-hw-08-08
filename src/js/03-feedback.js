@@ -6,6 +6,7 @@ const formData = {};
 
 const refs = {
   form: document.querySelector('.feedback-form'),
+  email: document.querySelector('input'),
   textarea: document.querySelector('textarea'),
 };
 
@@ -29,7 +30,7 @@ function populateTextArea() {
   const savedFormData = localStorage.getItem(STORAGE_KEY);
   if (savedFormData) {
     const parselFormData = JSON.parse(savedFormData);
-    console.log(refs.form);
     refs.textarea.value = parselFormData.message;
+    refs.email.value = parselFormData.email;
   }
 }
